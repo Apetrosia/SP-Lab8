@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=App_Data/greenswamp.db"));
 
@@ -57,6 +58,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHub<GreenSwampApp.Hubs.ChatHub>("/chatHub");
+
 app.UseStatusCodePagesWithReExecute("/NotFound");
 
 app.MapControllerRoute(
@@ -77,6 +80,11 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Feed}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "groupChat",
+    pattern: "groupchat",
+    defaults: new { controller = "GroupChat", action = "Index" });
 
 app.MapRazorPages();
 
