@@ -63,6 +63,18 @@ namespace GreenSwampApp.Controllers
                 var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (existingUser == null)
                 {
+                    var avatarOptions = new[]
+                    {
+                        "/images/green-toad-logo.svg",
+                        "/images/green-toad-sad.svg",
+                        "/images/green-toad-wink.svg",
+                        "/images/shrek.jpg",
+                        "/images/professor-about.png",
+                        "/images/istockphoto-1464399789-1024x1024.jpg",
+                        "/images/istockphoto-831860650-1024x1024.jpg",
+                        "/images/4x3_Photo_of_a_messy_desk_with_table.png"
+                    };
+
                     var user = new User
                     {
                         Email = model.Email,
@@ -70,7 +82,7 @@ namespace GreenSwampApp.Controllers
                         DisplayName = model.FullName,
                         Username = model.Email.Split('@')[0] + Guid.NewGuid().ToString().Substring(0, 4), // generate unique username
                         Bio = model.Bio ?? string.Empty,
-                        AvatarUrl = string.Empty,
+                        AvatarUrl = avatarOptions[Random.Shared.Next(avatarOptions.Length)],
                         CoverImageUrl = string.Empty,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
